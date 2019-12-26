@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PDF</title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+	<script type="text/javascript">
+		window.onload = function()
+		{
+			document.addEventListener("contextmenu",function(e){
+				e.preventDefault();
+			},false);
+		} 
+		$(document).contextmenu(function() {return false;});
+		url = "filename.pdf";
+		var thePdf= null;
+		var scale= 2;
+
+		pdfjsLib.getDocument(url).promise.then(function(pdf)
+		{
+			thePdf = pdf;
+			viewer = document.getElementById('pdf-viewer');
+			for(page = 1; page<=pdf.numPages;page++)
+			{
+				canvas = document.createElement("canvas");
+				canvas.classname = 'pdf-page-canvas';
+				viewer.appendChild(canvas);
+				renderPage(page,canvas);
+			}
+		});
+		function renderPage(pageNumber, canvas)
+		{
+			thePdf.getPage(pageNumber).then(function(page)
+			{
+				viewport = page.getViewport(scale);
+				canvas.height = viewport.height;
+				canvas.width = viewport.width;
+				page.render({canvasContext: canvas.getContext('2d'),viewport: viewport});
+			});
+		}
+
+	</script>
+</head>
+<body>
+	<div id="pdf-viewer" style="height: 150px;width: 100px!important;">
+	</div>
+</body>
+</html>
