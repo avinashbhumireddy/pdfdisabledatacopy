@@ -12,10 +12,11 @@
 			},false);
 		} 
 		$(document).contextmenu(function() {return false;});
-		url = "filename.pdf";
+				//please use the live url or else localhost
+		url = "http://localhost:8080/filename.pdf";
 		var thePdf= null;
 		var scale= 2;
-
+		//scale=2 means required number of pages i.e.. we can use 1  by 1 page or else we can use side by side pages to view)
 		pdfjsLib.getDocument(url).promise.then(function(pdf)
 		{
 			thePdf = pdf;
